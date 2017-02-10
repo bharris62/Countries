@@ -10,12 +10,9 @@ public class Main {
     static Map<String, List<Country>> worldMap = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
-        Scanner reader = new Scanner(System.in);
-        File f = new File("countries.txt");
-        Scanner scanner = new Scanner(f);
+        Scanner scanner = loadFile();
         addCurrentLetter(scanner);
-        System.out.println("What letter of countries do you want to print? ");
-        String input = reader.nextLine().toLowerCase();
+        String input = getLetterToPrint();
         try{
             if (input.matches("^[a-z]$")) {
                 saveFile(getCurrentArray(input), input);
@@ -26,6 +23,19 @@ public class Main {
         }catch (Exception e){
             System.out.println("No States start with that!");
         }
+    }
+
+    private static String getLetterToPrint() {
+        Scanner reader = new Scanner(System.in);
+        System.out.println("What letter of countries do you want to print? ");
+        String input = reader.nextLine().toLowerCase();
+        return input;
+    }
+
+    private static Scanner loadFile() throws FileNotFoundException {
+        File f = new File("countries.txt");
+        Scanner scanner = new Scanner(f);
+        return scanner;
     }
 
     public static List<Country> getCurrentArray(String letter){
@@ -73,7 +83,7 @@ public class Main {
 
         return null;
     }
-
+    // Not needed, used for testing.
     public static void printMap() {
         //System.out.println(worldMap);
         for (String name : worldMap.keySet()) {
@@ -88,11 +98,6 @@ public class Main {
 
     static void saveFile(List<Country> arry, String letter) throws IOException {
 
-        //JsonSerializer serializer = new JsonSerializer();
-        //String file = serializer.serialize(arry);
-
-
-
         File f = new File(letter + "_countries.txt");
         FileWriter fw = new FileWriter(f);
 
@@ -100,7 +105,6 @@ public class Main {
         for (Country name : arry){
             fw.write(name.getName() + "\n");
         }
-
 
         fw.close();
     }
