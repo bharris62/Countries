@@ -14,49 +14,54 @@ public class Main {
         Scanner scanner = new Scanner(f);
         addCurrentLetter(scanner);
         printMap();
-
-
     }
 
     public static void addCurrentLetter(Scanner scanner){
         String letters = "abcdefghijklmnopqrstuvwxyz";
-
         for(int i=0; i < letters.length(); i++) {
+            //System.out.println(i);
             addToArray(letters.substring(i,i+1), scanner);
+            //System.out.println(letters.charAt(i));
         }
     }
 
     public static void addToArray(String letter, Scanner scanner){
         List<Country> countries = new ArrayList<>();
-        int i = 0;
+        Country temp = null;
+
         while (scanner.hasNext()) {
 
             String line = scanner.nextLine();
             String[] columns = line.split("\\|");
-            if(i > 0){
-                worldMap.put(letter, countries);
-                break;
-            }
-            if(columns[1].substring(i,i+1).equals(letter)){
-                Country country = new Country(columns[0], columns[1]);
-                countries.add(country);
+
+            if(String.valueOf(columns[1].charAt(0)).equalsIgnoreCase(letter)) {
+                if (temp != null && String.valueOf(columns[1].charAt(0)).equalsIgnoreCase(letter)) {
+                    countries.add(temp);
+                    temp = new Country(columns[0], columns[1]);
+
+                } else {
+                    temp = new Country(columns[0], columns[1]);
+
+                }
             }else{
-                i++;
+                countries.add(temp);
+                temp = new Country(columns[0], columns[1]);
+                break;
             }
         }
 
-
-
+        countries.add(temp);
+        worldMap.put(letter,countries);
     }
 
 
     public static void printMap(){
+        System.out.println(worldMap);
         for(String name : worldMap.keySet()) {
             String key = name.toString();
             System.out.printf("%-8s", key + ": ");
             for (Country letter : worldMap.get(name)) {
                 System.out.print(letter.name + " |");
-
             }
             System.out.println();
         }
