@@ -1,4 +1,5 @@
-
+import jodd.json.JsonParser;
+import jodd.json.JsonSerializer;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -8,30 +9,47 @@ import java.util.*;
 public class Main {
     static Map<String, List<Country>> worldMap = new HashMap<>();
 
-    public static void main(String[] args) throws FileNotFoundException {
-
-        File f = new File("ctest.txt");
+    public static void main(String[] args) throws IOException {
+        Scanner reader = new Scanner(System.in);
+        File f = new File("countries.txt");
         Scanner scanner = new Scanner(f);
         addCurrentLetter(scanner);
-        printMap();
-    }
-
-    public static void addCurrentLetter(Scanner scanner){
-        String letters = "abcdefghijklmnopqrstuvwxyz";
-        Country temp = null;
-        for(int i=0; i < letters.length(); i++) {
-            //System.out.println(i);
-            temp = addToArray(letters.substring(i,i+1), scanner, temp);
-            //printMap();
+        System.out.println("What letter of countries do you want to print? ");
+        String input = reader.nextLine().toLowerCase();
+        try{
+            if (input.matches("^[a-z]$")) {
+                saveFile(getCurrentArray(input), input);
+            }
+            if(input.equalsIgnoreCase("x")){
+                System.out.println("No states start with x");
+            }
+        }catch (Exception e){
+            System.out.println("No States start with that!");
         }
     }
 
-    public static Country addToArray(String letter, Scanner scanner, Country temp){
+    public static List<Country> getCurrentArray(String letter){
+
+        return worldMap.get(letter);
+    }
+
+    public static void addCurrentLetter(Scanner scanner) {
+        String letters = "abcdefghijklmnopqrstuvwyz";
+        Country temp = null;
+        for (int i = 0; i < letters.length(); i++) {
+            temp = addToArray(letters.substring(i, i + 1), scanner, temp);
+        }
+    }
+
+    public static Country addToArray(String letter, Scanner scanner, Country temp) {
         List<Country> countries = new ArrayList<>();
         if (temp != null) {
-            countries.add(temp);
-            if(scanner.hasNext())
-            temp = null;
+            if (!temp.name.startsWith(letter)) {
+
+            } else {
+                countries.add(temp);
+                temp = null;
+            }
         }
 
         while (scanner.hasNext()) {
@@ -39,16 +57,10 @@ public class Main {
             String line = scanner.nextLine();
             String[] columns = line.split("\\|");
 
-            if(String.valueOf(columns[1].charAt(0)).equalsIgnoreCase(letter)) {
+            if (String.valueOf(columns[1].charAt(0)).equalsIgnoreCase(letter)) {
                 temp = new Country(columns[0], columns[1]);
-                if (String.valueOf(columns[1].charAt(0)).equalsIgnoreCase(letter)) {
-                    countries.add(temp);
-
-                } else {
-                    temp = new Country(columns[0], columns[1]);
-                    return temp;
-                }
-            }else{
+                countries.add(temp);
+            } else {
                 //countries.add(temp);
                 worldMap.put(letter, countries);
                 temp = new Country(columns[0], columns[1]);
@@ -57,14 +69,14 @@ public class Main {
         }
 
         countries.add(temp);
-        worldMap.put(letter,countries);
+        worldMap.put(letter, countries);
+
         return null;
     }
 
-
-    public static void printMap(){
-        System.out.println(worldMap);
-        for(String name : worldMap.keySet()) {
+    public static void printMap() {
+        //System.out.println(worldMap);
+        for (String name : worldMap.keySet()) {
             String key = name.toString();
             System.out.printf("%-8s", key + ": ");
             for (Country letter : worldMap.get(name)) {
@@ -72,17 +84,24 @@ public class Main {
             }
             System.out.println();
         }
-
     }
 
-    public static void addtoHash(String letter, Map<String, List<Country>> worldMap, List<Country> countries){
-        worldMap.put(letter, countries);
-    }
+    static void saveFile(List<Country> arry, String letter) throws IOException {
 
-    static void writeFile(String fileName, String fileContent) throws IOException {
-        File f = new File("countries.txt");
+        //JsonSerializer serializer = new JsonSerializer();
+        //String file = serializer.serialize(arry);
+
+
+
+        File f = new File(letter + "_countries.txt");
         FileWriter fw = new FileWriter(f);
-        fw.write(fileContent);
+
+        fw.write("The countries that start with " + letter.toUpperCase() + "\n");
+        for (Country name : arry){
+            fw.write(name.getName() + "\n");
+        }
+
+
         fw.close();
     }
 }
