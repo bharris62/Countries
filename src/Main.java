@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-        File f = new File("countries.txt");
+        File f = new File("ctest.txt");
         Scanner scanner = new Scanner(f);
         addCurrentLetter(scanner);
         printMap();
@@ -18,16 +18,21 @@ public class Main {
 
     public static void addCurrentLetter(Scanner scanner){
         String letters = "abcdefghijklmnopqrstuvwxyz";
+        Country temp = null;
         for(int i=0; i < letters.length(); i++) {
             //System.out.println(i);
-            addToArray(letters.substring(i,i+1), scanner);
-            //System.out.println(letters.charAt(i));
+            temp = addToArray(letters.substring(i,i+1), scanner, temp);
+            //printMap();
         }
     }
 
-    public static void addToArray(String letter, Scanner scanner){
+    public static Country addToArray(String letter, Scanner scanner, Country temp){
         List<Country> countries = new ArrayList<>();
-        Country temp = null;
+        if (temp != null) {
+            countries.add(temp);
+            if(scanner.hasNext())
+            temp = null;
+        }
 
         while (scanner.hasNext()) {
 
@@ -35,23 +40,25 @@ public class Main {
             String[] columns = line.split("\\|");
 
             if(String.valueOf(columns[1].charAt(0)).equalsIgnoreCase(letter)) {
-                if (temp != null && String.valueOf(columns[1].charAt(0)).equalsIgnoreCase(letter)) {
+                temp = new Country(columns[0], columns[1]);
+                if (String.valueOf(columns[1].charAt(0)).equalsIgnoreCase(letter)) {
                     countries.add(temp);
-                    temp = new Country(columns[0], columns[1]);
 
                 } else {
                     temp = new Country(columns[0], columns[1]);
-
+                    return temp;
                 }
             }else{
-                countries.add(temp);
+                //countries.add(temp);
+                worldMap.put(letter, countries);
                 temp = new Country(columns[0], columns[1]);
-                break;
+                return temp;
             }
         }
 
         countries.add(temp);
         worldMap.put(letter,countries);
+        return null;
     }
 
 
