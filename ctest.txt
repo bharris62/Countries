@@ -1,0 +1,3 @@
+AF|afghanistan
+BH|bahrain
+CM|cameroon

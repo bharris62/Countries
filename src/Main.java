@@ -11,7 +11,8 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         Scanner scanner = loadFile();
-        addCurrentLetter(scanner);
+        addToArray(scanner);
+        printMap();
         String input = getLetterToPrint();
         try{
             if (input.matches("^[a-z]$")) {
@@ -43,45 +44,32 @@ public class Main {
 
     }
 
-    public static void addCurrentLetter(Scanner scanner) {
-        String letters = "abcdefghijklmnopqrstuvwyz";
-        Country temp = null;
-        for (int i = 0; i < letters.length(); i++) {
-            temp = addToArray(letters.substring(i, i + 1), scanner, temp);
-        }
-    }
 
-    public static Country addToArray(String letter, Scanner scanner, Country temp) {
+    public static void addToArray(Scanner scanner) {
+        String start = "a";
         List<Country> countries = new ArrayList<>();
-        if (temp != null) {
-            if (!temp.name.startsWith(letter)) {
-
-            } else {
-                countries.add(temp);
-                temp = null;
-            }
-        }
-
         while (scanner.hasNext()) {
 
             String line = scanner.nextLine();
             String[] columns = line.split("\\|");
 
-            if (String.valueOf(columns[1].charAt(0)).equalsIgnoreCase(letter)) {
-                temp = new Country(columns[0], columns[1]);
-                countries.add(temp);
-            } else {
-                //countries.add(temp);
-                worldMap.put(letter, countries);
-                temp = new Country(columns[0], columns[1]);
-                return temp;
+
+            if(columns[1].startsWith(start)){
+                Country country = new Country(columns[0], columns[1]);
+                countries.add(country);
+
+            }else {
+                worldMap.put(start, countries);
+                start = columns[1].substring(0,1);
+                countries = new ArrayList<>();
+                Country country = new Country(columns[0], columns[1]);
+                countries.add(country);
             }
         }
 
-        countries.add(temp);
-        worldMap.put(letter, countries);
+        worldMap.put(start, countries);
 
-        return null;
+
     }
     // Not needed, used for testing.
     public static void printMap() {
