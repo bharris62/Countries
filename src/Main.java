@@ -39,8 +39,8 @@ public class Main {
     }
 
     public static List<Country> getCurrentArray(String letter){
-
         return worldMap.get(letter);
+
     }
 
     public static void addCurrentLetter(Scanner scanner) {
