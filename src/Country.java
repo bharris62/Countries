@@ -20,7 +20,4 @@ public class Country {
         return abbreviation;
     }
 
-    public void setAbbreviation(String abbreviation) {
-        this.abbreviation = abbreviation;
-    }
 }

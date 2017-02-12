@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Main {
@@ -12,14 +13,11 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Scanner scanner = loadFile();
         addToArray(scanner);
-        printMap();
+        //printMap();
         String input = getLetterToPrint();
         try{
             if (input.matches("^[a-z]$")) {
                 saveFile(getCurrentArray(input), input);
-            }
-            if(input.equalsIgnoreCase("x")){
-                System.out.println("No states start with x");
             }
         }catch (Exception e){
             System.out.println("No States start with that!");
@@ -53,7 +51,6 @@ public class Main {
             String line = scanner.nextLine();
             String[] columns = line.split("\\|");
 
-
             if(columns[1].startsWith(start)){
                 Country country = new Country(columns[0], columns[1]);
                 countries.add(country);
@@ -68,8 +65,6 @@ public class Main {
         }
 
         worldMap.put(start, countries);
-
-
     }
     // Not needed, used for testing.
     public static void printMap() {
