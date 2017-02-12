@@ -14,7 +14,7 @@ public class Main {
         Mapping mapping = new Mapping();
         Scanner scanner = loadFile();
         mapping.addToArray(scanner);
-        //printMap();
+        mapping.printMap();
         String input = mapping.getLetterToPrint();
         try{
             if (input.matches("^[a-z]$")) {
