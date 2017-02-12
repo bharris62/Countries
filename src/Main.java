@@ -11,24 +11,18 @@ public class Main {
     static Map<String, List<Country>> worldMap = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
+        Mapping mapping = new Mapping();
         Scanner scanner = loadFile();
-        addToArray(scanner);
+        mapping.addToArray(scanner);
         //printMap();
-        String input = getLetterToPrint();
+        String input = mapping.getLetterToPrint();
         try{
             if (input.matches("^[a-z]$")) {
-                saveFile(getCurrentArray(input), input);
+                saveFile(mapping.getCurrentArray(input), input);
             }
         }catch (Exception e){
             System.out.println("No States start with that!");
         }
-    }
-
-    private static String getLetterToPrint() {
-        Scanner reader = new Scanner(System.in);
-        System.out.println("What letter of countries do you want to print? ");
-        String input = reader.nextLine().toLowerCase();
-        return input;
     }
 
     private static Scanner loadFile() throws FileNotFoundException {
@@ -37,47 +31,6 @@ public class Main {
         return scanner;
     }
 
-    public static List<Country> getCurrentArray(String letter){
-        return worldMap.get(letter);
-
-    }
-
-
-    public static void addToArray(Scanner scanner) {
-        String start = "a";
-        List<Country> countries = new ArrayList<>();
-        while (scanner.hasNext()) {
-
-            String line = scanner.nextLine();
-            String[] columns = line.split("\\|");
-
-            if(columns[1].startsWith(start)){
-                Country country = new Country(columns[0], columns[1]);
-                countries.add(country);
-
-            }else {
-                worldMap.put(start, countries);
-                start = columns[1].substring(0,1);
-                countries = new ArrayList<>();
-                Country country = new Country(columns[0], columns[1]);
-                countries.add(country);
-            }
-        }
-
-        worldMap.put(start, countries);
-    }
-    // Not needed, used for testing.
-    public static void printMap() {
-        //System.out.println(worldMap);
-        for (String name : worldMap.keySet()) {
-            String key = name.toString();
-            System.out.printf("%-8s", key + ": ");
-            for (Country letter : worldMap.get(name)) {
-                System.out.print(letter.name + " |");
-            }
-            System.out.println();
-        }
-    }
 
     static void saveFile(List<Country> arry, String letter) throws IOException {
 
