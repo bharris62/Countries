@@ -8,9 +8,10 @@ import java.lang.reflect.Array;
 import java.util.*;
 
 public class Main {
-    static Map<String, List<Country>> worldMap = new HashMap<>();
+
 
     public static void main(String[] args) throws IOException {
+
         Mapping mapping = new Mapping();
         Scanner scanner = loadFile();
         mapping.addToArray(scanner);

@@ -1,16 +1,15 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Created by BHarris on 2/12/17.
  */
 public class Mapping {
-
+    Map<String, List<Country>> worldMap = new HashMap<>();
 
     public String getLetterToPrint() {
+        Main main = new Main();
         Scanner reader = new Scanner(System.in);
         System.out.println("What letter of countries do you want to print? ");
         String input = reader.nextLine().toLowerCase();
@@ -19,12 +18,12 @@ public class Mapping {
 
 
     public  List<Country> getCurrentArray(String letter){
-        return Main.worldMap.get(letter);
+        return worldMap.get(letter);
 
     }
 
 
-    public static void addToArray(Scanner scanner) {
+    public void addToArray(Scanner scanner) {
         String start = "a";
         List<Country> countries = new ArrayList<>();
         while (scanner.hasNext()) {
@@ -37,7 +36,7 @@ public class Mapping {
                 countries.add(country);
 
             }else {
-                Main.worldMap.put(start, countries);
+                worldMap.put(start, countries);
                 start = columns[1].substring(0,1);
                 countries = new ArrayList<>();
                 Country country = new Country(columns[0], columns[1]);
@@ -45,15 +44,15 @@ public class Mapping {
             }
         }
 
-        Main.worldMap.put(start, countries);
+        worldMap.put(start, countries);
     }
     // Not needed, used for testing.
-    public static void printMap() {
+    public void printMap() {
         //System.out.println(worldMap);
-        for (String name : Main.worldMap.keySet()) {
+        for (String name : worldMap.keySet()) {
             String key = name.toString();
             System.out.printf("%-8s", key + ": ");
-            for (Country letter : Main.worldMap.get(name)) {
+            for (Country letter : worldMap.get(name)) {
                 System.out.print(letter.name + " |");
             }
             System.out.println();
