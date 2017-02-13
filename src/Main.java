@@ -1,9 +1,7 @@
 import jodd.json.JsonParser;
 import jodd.json.JsonSerializer;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+
+import java.io.*;
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -13,9 +11,16 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         Mapping mapping = new Mapping();
-        Scanner scanner = loadFile();
-        mapping.addToArray(scanner);
-        mapping.printMap();
+
+        try {
+            Scanner scanner = loadFile();
+            mapping.addToArray(scanner);
+            mapping.printMap();
+
+        }catch(FileNotFoundException fnf){
+            System.out.println("sorry, your file was not found; Error:  " + fnf);
+        }
+
         String input = mapping.getLetterToPrint();
         try{
             if (input.matches("^[a-z]$")) {
