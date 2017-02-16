@@ -9,7 +9,6 @@ public class Mapping {
     Map<String, List<Country>> worldMap = new HashMap<>();
 
     public String getLetterToPrint() {
-        Main main = new Main();
         Scanner reader = new Scanner(System.in);
         System.out.println("What letter of countries do you want to print? ");
         String input = reader.nextLine().toLowerCase();
@@ -52,8 +51,8 @@ public class Mapping {
         for (String name : worldMap.keySet()) {
             String key = name.toString();
             System.out.printf("%-8s", key + ": ");
-            for (Country letter : worldMap.get(name)) {
-                System.out.print(letter.name + " |");
+            for (Country country : worldMap.get(name)) {
+                System.out.print(country.name + " |");
             }
             System.out.println();
         }

@@ -1,8 +1,4 @@
-import jodd.json.JsonParser;
-import jodd.json.JsonSerializer;
-
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Main {
@@ -13,7 +9,7 @@ public class Main {
         Mapping mapping = new Mapping();
 
         try {
-            Scanner scanner = loadFile();
+            Scanner scanner = returnScanner();
             mapping.addToArray(scanner);
             mapping.printMap();
 
@@ -31,7 +27,7 @@ public class Main {
         }
     }
 
-    private static Scanner loadFile() throws FileNotFoundException {
+    private static Scanner returnScanner() throws FileNotFoundException {
         File f = new File("countries.txt");
         Scanner scanner = new Scanner(f);
         return scanner;
