@@ -1,5 +1,4 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+
 import java.util.*;
 
 /**
@@ -8,10 +7,14 @@ import java.util.*;
 public class Mapping {
     Map<String, List<Country>> worldMap = new HashMap<>();
 
-    public String getLetterToPrint() {
+    public String getLetterToPrint() throws Exception {
         Scanner reader = new Scanner(System.in);
         System.out.println("What letter of countries do you want to print? ");
         String input = reader.nextLine().toLowerCase();
+        if(!input.matches("^[a-z]$")){
+            throw new Exception();
+        }
+
         return input;
     }
 

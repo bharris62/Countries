@@ -4,7 +4,7 @@ import java.util.*;
 public class Main {
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
 
         Mapping mapping = new Mapping();
 
@@ -18,13 +18,9 @@ public class Main {
         }
 
         String input = mapping.getLetterToPrint();
-        try{
-            if (input.matches("^[a-z]$")) {
-                saveFile(mapping.getCurrentArray(input), input);
-            }
-        }catch (Exception e){
-            System.out.println("No States start with that!");
-        }
+        saveFile(mapping.getCurrentArray(input), input);
+
+
     }
 
     private static Scanner returnScanner() throws FileNotFoundException {
