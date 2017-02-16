@@ -33,22 +33,19 @@ public class Mapping {
             String line = scanner.nextLine();
             String[] columns = line.split("\\|");
 
-            if(columns[1].startsWith(start)){
-                Country country = new Country(columns[0], columns[1]);
-                countries.add(country);
-
-            }else {
+            if(!columns[1].startsWith(start)){
                 worldMap.put(start, countries);
                 start = columns[1].substring(0,1);
                 countries = new ArrayList<>();
-                Country country = new Country(columns[0], columns[1]);
-                countries.add(country);
             }
+
+            Country country = new Country(columns[0], columns[1]);
+            countries.add(country);
         }
 
         worldMap.put(start, countries);
     }
-    // Not needed, used for testing.
+
     public void printMap() {
         //System.out.println(worldMap);
         for (String name : worldMap.keySet()) {
