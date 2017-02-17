@@ -7,15 +7,9 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         Mapping mapping = new Mapping();
-
-        try {
-            Scanner scanner = returnScanner();
-            mapping.addToArray(scanner);
-            mapping.printMap();
-
-        }catch(FileNotFoundException fnf){
-            System.out.println("sorry, your file was not found; Error:  " + fnf);
-        }
+        Scanner scanner = returnScanner();
+        mapping.addToArray(scanner);
+        mapping.printMap();
 
         String input = mapping.getLetterToPrint();
         saveFile(mapping.getCurrentArray(input), input);
@@ -23,10 +17,20 @@ public class Main {
 
     }
 
-    private static Scanner returnScanner() throws FileNotFoundException {
-        File f = new File("countries.txt");
-        Scanner scanner = new Scanner(f);
+    private static Scanner returnScanner() {
+        Scanner scanner = null;
+        try {
+            File f = new File("countries.txt");
+            scanner = new Scanner(f);
+            return scanner;
+
+        } catch (FileNotFoundException fnf) {
+            System.out.println("sorry, your file was not found; Error:  " + fnf);
+        }
+
         return scanner;
+
+
     }
 
 
